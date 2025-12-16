@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.8; // kSpeedAt12Volts desired top speed
@@ -33,11 +34,13 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final LimelightSubsystem limelight = new LimelightSubsystem();
-
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    
+    private final LimelightSubsystem limelight = new LimelightSubsystem();
+    /** TurretSubsystem */
+    private final TurretSubsystem m_turretSubsystem = new TurretSubsystem();
 
     public RobotContainer() {
         configureBindings();
@@ -76,6 +79,16 @@ public class RobotContainer {
 
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        /* run turret motor in suck-in and push-out modes */
+        boolean useTurretSubsystem = false;
+        if ( useTurretSubsystem ) {
+            // y() -> Turreting the robot UP
+            joystick.y().whileTrue(m_turretSubsystem.runTurretRightCommand());
+
+            // start() -> Lowering the robot DOWN
+            joystick.start().whileTrue(m_turretSubsystem.runTurretLeftCommand());
+        }
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
