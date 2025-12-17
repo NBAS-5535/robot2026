@@ -7,7 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,8 +24,8 @@ public class TurretSubsystem extends SubsystemBase {
   }
   
   /** Creates a new TurretSubsystem. */
-  private SparkMax turretMotor =
-      new SparkMax(41, MotorType.kBrushless);
+  private SparkFlex turretMotor =
+      new SparkFlex(44, MotorType.kBrushless);
   private SparkClosedLoopController turretController = turretMotor.getClosedLoopController();
   private RelativeEncoder turretEncoder = turretMotor.getEncoder();
 
