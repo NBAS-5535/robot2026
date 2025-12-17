@@ -18,7 +18,7 @@ public class Constants {
         public static final double kTurretKi = 0;
         public static final double kTurretKd = 0.;
         
-        public static final double TurretSetpointTestSpeed = 0.1;
+        public static final double TurretSetpointTestSpeed = 0.1; // previously 0.1
       
         public static final class TurretSubSystemSetpoints {
           public static final double kBase = 0;

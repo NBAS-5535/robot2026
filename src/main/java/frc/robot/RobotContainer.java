@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
+import frc.robot.commands.AlignCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -89,6 +89,8 @@ public class RobotContainer {
 
             // start() -> Lowering the robot DOWN
             joystick.b().whileTrue(m_turretSubsystem.runTurretLeftCommand());
+
+            joystick.rightBumper().onTrue(new AlignCommand(m_turretSubsystem, limelight, 0));
         }
 
         drivetrain.registerTelemetry(logger::telemeterize);

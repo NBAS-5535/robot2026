@@ -41,7 +41,7 @@ public class TurretSubsystem extends SubsystemBase {
     turretController.setReference(TurretCurrentTarget, ControlType.kMAXMotionPositionControl);
   }
 
-  private void setTurretPower(double power) {
+  public void setTurretPower(double power) {
     turretMotor.set(power);
   }
 
@@ -63,6 +63,7 @@ public class TurretSubsystem extends SubsystemBase {
           }
         });
   }
+
 
   /**
    * Command to run the turret motor. 

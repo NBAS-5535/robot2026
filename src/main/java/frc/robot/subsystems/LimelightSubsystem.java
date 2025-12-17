@@ -19,6 +19,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
   private RawFiducial[] fiducials;
   private LimelightResults limelightResults;
+  private double m_minDistance = 0.;
 
   /*
   public LimelightSubsystem(LimelightConfig limelightConfig) {
@@ -123,5 +124,44 @@ public class LimelightSubsystem extends SubsystemBase {
       return fiducial;
     }
     throw new NoSuchTargetException("No target with ID " + ids + "is in view!");
+  }
+
+  public RawFiducial getFiducialWithId(int id) {
+  
+    for (RawFiducial fiducial : fiducials) {
+        if (fiducial.id == id) {
+            return fiducial;
+        }
+    }
+    throw new NoSuchTargetException("Can't find ID: " + id);
+  }
+
+  public RawFiducial getClosestFiducial() {
+    if (fiducials == null || fiducials.length == 0) {
+        throw new NoSuchTargetException("No fiducials found.");
+    }
+
+    RawFiducial closest = fiducials[0];
+    double minDistance = closest.ta;
+
+    for (RawFiducial fiducial : fiducials) {
+        if (fiducial.ta > minDistance) {
+            closest = fiducial;
+            minDistance = fiducial.ta;
+        }
+    }
+    SmartDashboard.putNumber("minDistance", minDistance);
+
+    /* persist closest distance value */
+    setMinDistance(minDistance);
+
+    return closest;
+  }
+
+   
+  /* keep track of the minDistance found via linelight Apriltag search */
+  public void setMinDistance(double distance) {
+    m_minDistance = distance;
+    SmartDashboard.putNumber("VisionClosetAprilTag", distance);
   }
 }
