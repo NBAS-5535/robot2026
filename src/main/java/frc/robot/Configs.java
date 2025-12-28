@@ -1,10 +1,13 @@
 package frc.robot;
 
+import com.ctre.phoenix6.configs.CANrangeConfiguration;
+import com.ctre.phoenix6.signals.UpdateModeValue;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import frc.robot.Constants.CANRangeConstants;
 import frc.robot.Constants.TurretSubsystemConstants;
 
 public class Configs {
@@ -13,7 +16,7 @@ public class Configs {
     /* *****************
     * TurretSubsystem 
     */
-   public static final class TurretSubsystem {
+   public static final class TurretSubsystemConfiguration {
      public static final SparkMaxConfig turretConfig = new SparkMaxConfig();
  
      static {
@@ -44,6 +47,20 @@ public class Configs {
        turretConfig.idleMode(IdleMode.kBrake);
      }
    }
+
+   public static final class CANRangeConfiguration {
+
+    public static final CANrangeConfiguration proximitySensorConfig = new CANrangeConfiguration();
+
+    static {
+      // If CANrange has a signal strength of at least 2000, it is a valid measurement.
+      proximitySensorConfig.ProximityParams.MinSignalStrengthForValidMeasurement = CANRangeConstants.kMinSignalStrengthForValidMeasurement;
+      // If CANrange detects an object within 0.1 meters, it will trigger the "isDetected" signal.
+      proximitySensorConfig.ProximityParams.ProximityThreshold = CANRangeConstants.kProximityThreshold; 
+      // Make the CANrange update as fast as possible at 100 Hz. This requires short-range mode.
+      proximitySensorConfig.ToFParams.UpdateMode = UpdateModeValue.ShortRange100Hz; 
+    }
+   }   
 
   
 }

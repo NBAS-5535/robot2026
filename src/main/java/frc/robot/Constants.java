@@ -18,12 +18,23 @@ public class Constants {
         public static final double kTurretKi = 0;
         public static final double kTurretKd = 0.;
         
-        public static final double TurretSetpointTestSpeed = 0.1; // previously 0.1
+        public static final double TurretSetpointTestSpeed = 0.1;
       
         public static final class TurretSubSystemSetpoints {
           public static final double kBase = 0;
           public static final double kmaxTurretSetpoint = 0.2;
          }
     
-      }
+    }
+
+    public static final class CANRangeConstants {
+      public static final int kCANRangeId = 46;
+  
+      public static int    kMinSignalStrengthForValidMeasurement = 2000;
+      public static double kProximityThreshold = 0.1;
+
+      public static final double kUpdatePeriod = 0.5; // Update every 500 ms
+    }
+  
+
 }

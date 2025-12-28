@@ -15,11 +15,11 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.AlignCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.commands.TurretAlignCommand;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond) * 0.8; // kSpeedAt12Volts desired top speed
@@ -90,7 +90,7 @@ public class RobotContainer {
             // start() -> Lowering the robot DOWN
             joystick.b().whileTrue(m_turretSubsystem.runTurretLeftCommand());
 
-            joystick.rightBumper().onTrue(new AlignCommand(m_turretSubsystem, limelight, 0));
+            joystick.rightBumper().onTrue(new TurretAlignCommand(m_turretSubsystem, limelight, 0));
         }
 
         drivetrain.registerTelemetry(logger::telemeterize);

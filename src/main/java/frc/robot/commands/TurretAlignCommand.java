@@ -1,11 +1,5 @@
 package frc.robot.commands;
 
-import static edu.wpi.first.units.Units.*;
-
-import org.w3c.dom.views.DocumentView;
-
-
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.generated.TunerConstants;
@@ -13,22 +7,8 @@ import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.LimelightSubsystem.NoSuchTargetException;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.Vision.LimelightHelpers.RawFiducial;
-//import frc.robot.Vision.LimelightHelpers.LimelightTarget_Fiducial;
-//import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.controller.PIDController;
 
-
-class PIDControllerConfigurable extends PIDController {
-  public PIDControllerConfigurable(double kP, double kI, double kD) {
-      super(kP, kI, kD);
-  }
-  
-  public PIDControllerConfigurable(double kP, double kI, double kD, double tolerance) {
-      super(kP, kI, kD);
-      this.setTolerance(tolerance);
-  }
-}
-public class AlignCommand extends Command {
+public class TurretAlignCommand extends Command {
   private final TurretSubsystem m_turret;
   private final LimelightSubsystem m_limelight;
   private int m_tagId;
@@ -42,7 +22,7 @@ public class AlignCommand extends Command {
   public double velocityX = 0;
   private double m_minDistance = 0.;
 
-  public AlignCommand(TurretSubsystem turret, LimelightSubsystem limelight, int tagId) {
+  public TurretAlignCommand(TurretSubsystem turret, LimelightSubsystem limelight, int tagId) {
     this.m_turret = turret;
     this.m_limelight = limelight;
     this.m_tagId = tagId;
