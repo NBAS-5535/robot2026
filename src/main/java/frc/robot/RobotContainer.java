@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.RangeSensorSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.commands.TurretAlignCommand;
 
@@ -41,6 +42,9 @@ public class RobotContainer {
     private final LimelightSubsystem limelight = new LimelightSubsystem();
     /** TurretSubsystem */
     private final TurretSubsystem m_turretSubsystem = new TurretSubsystem();
+
+     /** RangeSensorSubsystem */
+     private final RangeSensorSubsystem m_sensorSubsystem = new RangeSensorSubsystem();
 
     public RobotContainer() {
         configureBindings();
