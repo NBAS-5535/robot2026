@@ -28,7 +28,7 @@ public class Constants {
     }
 
     public static final class CANRangeConstants {
-      public static final int kCANRangeId = 46;
+      public static final int kCANRangeId = 16;
   
       public static int    kMinSignalStrengthForValidMeasurement = 2000;
       public static double kProximityThreshold = 0.1;

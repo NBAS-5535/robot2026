@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Configs;
@@ -58,6 +59,10 @@ public class RangeSensorSubsystem extends SubsystemBase {
        * When the device is on a CANivore, the reported latency is very close to the true latency of the sensor, as the CANivore
        * timestamps when it receives the frame. This can be further used for latency compensation.
        */
+
+      SmartDashboard.putNumber("CANRAnge/Distance (mm)", distance.getValueAsDouble());
+      SmartDashboard.putNumber("CANRAnge/signalStrength", signalStrength.getValue());
+      SmartDashboard.putBoolean("CANRAngeObject Detected", isDetected.getValue());
     }
   }
 
