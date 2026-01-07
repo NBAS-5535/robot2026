@@ -34,21 +34,25 @@ public class RangeSensorSubsystem extends SubsystemBase {
       var distance = m_canrange.getDistance();
       var signalStrength = m_canrange.getSignalStrength();
 
+      /*
       System.out.println("Distance is " + distance.toString() + 
         " with a signal strength of " + signalStrength + " and " + 
         distance.getTimestamp().getLatency() + " seconds of latency");
-
+      */
+      
       // Get the isDetected StatusSignalValue without refreshing
       var isDetected = m_canrange.getIsDetected(false);
       /* This time wait for the signal to reduce latency */
       isDetected.waitForUpdate(CANRangeConstants.kUpdatePeriod); // Wait up to our period
 
+      /*
       System.out.println(
         "Is Detected is " +
         isDetected.getValue() + " " +
         isDetected.getUnits() + " with " +
         isDetected.getTimestamp().getLatency() + " seconds of latency"
       );
+      */
 
       /**
        * Notice when running this example that the second print's latency is always shorter than the first print's latency.
