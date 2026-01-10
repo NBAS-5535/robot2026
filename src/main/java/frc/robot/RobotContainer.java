@@ -43,7 +43,7 @@ public class RobotContainer {
     
     private final LimelightSubsystem limelight = new LimelightSubsystem();
     /** TurretSubsystem */
-    private final TurretSubsystem m_turretSubsystem = new TurretSubsystem();
+    //private final TurretSubsystem m_turretSubsystem = new TurretSubsystem();
 
      /** RangeSensorSubsystem */
      private final RangeSensorSubsystem m_sensorSubsystem = new RangeSensorSubsystem();
@@ -88,6 +88,7 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         /* run turret motor in suck-in and push-out modes */
+        /* 
         boolean useTurretSubsystem = false;
         if ( useTurretSubsystem ) {
             // y() -> Turreting the robot UP
@@ -98,9 +99,10 @@ public class RobotContainer {
 
             joystick.rightBumper().onTrue(new TurretAlignCommand(m_turretSubsystem, limelight, 0));
         }
+            */
 
         /* get distance and move for that amount */
-        boolean getRangeAndGoTest = false;
+        boolean getRangeAndGoTest = true;
         if (getRangeAndGoTest) {
             joystick.a().onTrue(new SequentialCommandGroup(
                 new InstantCommand(() -> drivetrain.setCurrentPose()),
