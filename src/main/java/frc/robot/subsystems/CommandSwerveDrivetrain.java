@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -45,6 +46,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveTranslation m_translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
+
+    /* user command-related markers */
+    private Pose2d m_initialPose = this.getState().Pose;
 
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
@@ -284,5 +288,46 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         Matrix<N3, N1> visionMeasurementStdDevs
     ) {
         super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds), visionMeasurementStdDevs);
+    }
+
+    /* check if the desired Pose is reached */
+    public Boolean isDesiredPoseReached(double distanceToGo){
+        Pose2d currentPose = getCurrentPose(); //getState().Pose;
+        //SmartDashboard.putNumber("Pose/Current X", currentPose.getX());
+        //SmartDashboard.putNumber("Pose/Current Y", currentPose.getY());
+        double currentDistanceInX = Math.abs(currentPose.getX()) - Math.abs(m_initialPose.getX());
+        double currentDistanceInY = Math.abs(currentPose.getY()) - Math.abs(m_initialPose.getY());
+        double actualDistance = Math.sqrt(currentDistanceInX * currentDistanceInX + currentDistanceInY * currentDistanceInY);
+        SmartDashboard.putNumber("Pose/distance", actualDistance);
+        // add a 1% error margin
+        boolean condition = actualDistance >= 0.99 * distanceToGo ? true : false;
+        if ( condition ) {
+            this.stopAllMotors();
+        }
+        SmartDashboard.putBoolean("Pose/Reached?", condition);
+        return condition;
+    }
+
+    /* store the current Pose */
+    public void setCurrentPose() {
+        m_initialPose = getState().Pose;
+        SmartDashboard.putNumber("Pose/Initial X", m_initialPose.getX());
+        SmartDashboard.putNumber("Pose/Initial Y", m_initialPose.getY());
+    }
+    
+    /* get the current location */
+    public Pose2d getCurrentPose() {
+        Pose2d currentPose = getState().Pose;
+        SmartDashboard.putNumber("Pose/Current X", currentPose.getX());
+        SmartDashboard.putNumber("Pose/Current Y", currentPose.getY());
+        return currentPose;
+    }
+
+    /* stop all motors when the desired state is reached to be used with until() */
+    public void stopAllMotors() {
+        for ( int i = 0; i < 4; i++ ){
+            this.getModule(i).getDriveMotor().stopMotor();
+            this.getModule(i).getSteerMotor().stopMotor();
+        }
     }
 }

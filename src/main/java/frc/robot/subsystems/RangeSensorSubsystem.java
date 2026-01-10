@@ -70,4 +70,7 @@ public class RangeSensorSubsystem extends SubsystemBase {
     }
   }
 
+  public double getDistance(){
+    return m_canrange.getDistance().getValueAsDouble();
+  }
 }

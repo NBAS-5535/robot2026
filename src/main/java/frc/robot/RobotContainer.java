@@ -12,6 +12,8 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -86,7 +88,7 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         /* run turret motor in suck-in and push-out modes */
-        boolean useTurretSubsystem = true;
+        boolean useTurretSubsystem = false;
         if ( useTurretSubsystem ) {
             // y() -> Turreting the robot UP
             joystick.a().whileTrue(m_turretSubsystem.runTurretRightCommand());
@@ -97,8 +99,20 @@ public class RobotContainer {
             joystick.rightBumper().onTrue(new TurretAlignCommand(m_turretSubsystem, limelight, 0));
         }
 
+        /* get distance and move for that amount */
+        boolean getRangeAndGoTest = false;
+        if (getRangeAndGoTest) {
+            joystick.a().onTrue(new SequentialCommandGroup(
+                new InstantCommand(() -> drivetrain.setCurrentPose()),
+                drivetrain.sysIdDynamic(Direction.kForward)
+                    .until(() -> drivetrain.isDesiredPoseReached(m_sensorSubsystem.getDistance()))
+            ));
+        }
+
         drivetrain.registerTelemetry(logger::telemeterize);
     }
+
+    
 
     public Command getAutonomousCommand() {
         return Commands.print("No autonomous command configured");
